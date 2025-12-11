@@ -41,9 +41,97 @@
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <Spinner
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/topPanel"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <EditText
+                android:id="@+id/addTourTitle"
+                android:hint="Tour title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Country"
+                android:fontFamily="sans-serif-black"
+                />
+            <Spinner
+                android:id="@+id/addTourSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <DatePicker
+                android:id="@+id/addTourDatePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:spinnersShown="true" />
+
+            <EditText
+                android:inputType="number"
+                android:id="@+id/addTourPrice"
+                android:hint="Tour price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <Button
+                android:id="@+id/addTourButton"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:text="Add tour"
+                android:fontFamily="sans-serif-black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_buy"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Current tours"
+                android:fontFamily="sans-serif-black"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerAdminTours"
+                android:layout_gravity="center"
+                android:background="@drawable/tours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Users"
+                android:fontFamily="sans-serif-black"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerAdminUsers"
+                android:layout_gravity="center"
+                android:background="@drawable/tours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

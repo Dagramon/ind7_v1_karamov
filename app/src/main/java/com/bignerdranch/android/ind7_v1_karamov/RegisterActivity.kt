@@ -42,7 +42,7 @@ class RegisterActivity : AppCompatActivity() {
             {
                 if (passwordText.text == repeatPasswordText.text)
                 {
-                    val user = User(0, loginText.text.toString(), passwordText.text.toString(), false)
+                    val user = User(null, loginText.text.toString(), passwordText.text.toString(), false)
                     val db = MainDB.getDb(this)
                     Thread {
                         if (!db.getUserDao().UserExists(user.login)) {

@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "Users")
 data class User (
     @PrimaryKey
-    val id : Int,
+    val id : Int? = null,
     @ColumnInfo
-    val login : String,
+    var login : String,
     @ColumnInfo
-    val password : String,
+    var password : String,
     @ColumnInfo
-    val admin : Boolean
+    var admin : Boolean
 )

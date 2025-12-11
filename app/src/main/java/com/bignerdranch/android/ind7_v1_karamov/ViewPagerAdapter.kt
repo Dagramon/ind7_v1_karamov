@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
+// TODO: ADD MORE SHIT HERE
 class CustomPagerAdapter(private val items: MutableList<BoughtTour>) :
     RecyclerView.Adapter<CustomPagerAdapter.CustomViewHolder>() {
 

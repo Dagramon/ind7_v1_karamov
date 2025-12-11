@@ -14,6 +14,8 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
 
+// TODO: FIX THIS SHIT AND MAKE DISCOUNTS
+
 var boughtTours = mutableListOf<BoughtTour>(
     BoughtTour("Explore the heart of russia", "russia", "", ""),
     BoughtTour("America tour", "usa", "", ""),

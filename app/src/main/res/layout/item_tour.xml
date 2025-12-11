@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/motionLayout"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:background="@drawable/top_bar">
 
     <ImageView
         android:id="@+id/imageView"
@@ -33,6 +34,24 @@
             android:textColor="@color/white"
             android:textSize="35sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/priceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textColor="@color/green"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -60,16 +79,33 @@
 
     </LinearLayout>
 
-    <Button
-        android:layout_margin="15dp"
-        android:layout_width="125dp"
+    <LinearLayout
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/button_buy"
-        android:text="BUY THIS TOUR"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        />
+        >
+
+        <EditText
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxWidth="125dp"
+            android:hint="Name"
+            />
+        <Button
+            android:layout_margin="15dp"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@drawable/button_buy"
+            android:text="BUY THIS TOUR"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

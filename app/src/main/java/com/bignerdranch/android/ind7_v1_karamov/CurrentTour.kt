@@ -9,15 +9,15 @@ import androidx.room.PrimaryKey
 data class CurrentTour
     (
     @PrimaryKey
-    val id : Int,
+    val id : Int? = null,
     @ColumnInfo
-    val name : String,
+    var name : String,
     @ColumnInfo
-    val country : String,
+    var country : String,
     @ColumnInfo
-    val date : String,
+    var date : String,
     @ColumnInfo
-    val price : Int,
+    var price : Int,
     @Ignore
     var flagUrl : String,
     @Ignore

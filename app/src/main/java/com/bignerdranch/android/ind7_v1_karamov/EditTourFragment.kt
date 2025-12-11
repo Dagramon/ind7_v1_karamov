@@ -1,0 +1,75 @@
+package com.bignerdranch.android.ind7_v1_karamov
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.DatePicker
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+
+
+class EditTourFragment(var tour : CurrentTour) : Fragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_edit_tour, container, false)
+
+        var titleEditText = view.findViewById<EditText>(R.id.editTourTitle)
+        var priceEditText = view.findViewById<EditText>(R.id.editTourPrice)
+        var countryText = view.findViewById<TextView>(R.id.editTourCountryText)
+        var countrySpinner = view.findViewById<Spinner>(R.id.editTourCountry)
+        var datePicker = view.findViewById<DatePicker>(R.id.editTourDatePicker)
+        var buttonSave = view.findViewById<Button>(R.id.saveTour)
+
+        titleEditText.setText(tour.name)
+        countryText.setText(tour.country)
+        datePicker.minDate = Calendar.getInstance().timeInMillis
+        datePicker.maxDate = Calendar.getInstance().apply {
+            add(Calendar.YEAR, 1)
+        }.timeInMillis
+
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+
+        buttonSave.setOnClickListener {
+            if (titleEditText.text.toString().isNotEmpty() && priceEditText.text.toString().isNotEmpty())
+            {
+
+                val date = Calendar.getInstance().apply {
+                    set(
+                        datePicker.year,
+                        datePicker.month,
+                        datePicker.dayOfMonth
+                    )
+                }
+
+                tour.name = titleEditText.text.toString()
+                tour.country = countrySpinner.selectedItem.toString()
+                tour.date = dateFormat.format(date.time)
+                tour.price = priceEditText.text.toString().toInt()
+
+                val db = MainDB.getDb(this.requireContext())
+                Thread{
+                    db.getTourDao().updateTour(tour)
+
+                    val mainAdminFragment = MainAdminFragment()
+                    parentFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, mainAdminFragment)
+                        .commit()
+
+                }.start()
+            }
+        }
+
+        return view
+    }
+}
