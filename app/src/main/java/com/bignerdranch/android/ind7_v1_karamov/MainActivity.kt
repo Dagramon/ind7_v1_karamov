@@ -2,9 +2,12 @@ package com.bignerdranch.android.ind7_v1_karamov
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.bignerdranch.android.ind7_v1_karamov.fragments.MainClientFragment
 
 class MainActivity : AppCompatActivity() {
+
+    val login: String? = intent.getStringExtra("USER_LOGIN")
+    val admin: Boolean = intent.getBooleanExtra("USER_ADMIN", false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
