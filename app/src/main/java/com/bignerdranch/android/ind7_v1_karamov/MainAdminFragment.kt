@@ -1,30 +1,38 @@
 package com.bignerdranch.android.ind7_v1_karamov
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.app.NotificationCompatSideChannelService
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class MainAdminFragment : Fragment() {
+class MainAdminFragment(val user: User) : Fragment() {
 
     var usersList = mutableListOf<User>()
     var currentToursList = mutableListOf<CurrentTour>()
 
     private lateinit var datePicker : DatePicker
+
+    private lateinit var welcomeText : TextView
     private lateinit var addTitleText : EditText
     private lateinit var addTourPrice : EditText
     private lateinit var countrySpinner : Spinner
@@ -32,17 +40,39 @@ class MainAdminFragment : Fragment() {
     private lateinit var recyclerTours : RecyclerView
     private lateinit var recyclerUsers : RecyclerView
 
+    val countries = arrayOf(
+        "russia",
+        "usa",
+        "germany",
+        "france",
+        "japan",
+        "china"
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_main_admin, container, false)
-
+        welcomeText = view.findViewById(R.id.welcomeText)
+        welcomeText.setText(user.login)
         datePicker = view.findViewById(R.id.addTourDatePicker)
         addTitleText = view.findViewById(R.id.addTourTitle)
         addTourPrice = view.findViewById(R.id.addTourPrice)
         countrySpinner = view.findViewById(R.id.addTourSpinner)
         addTourButton = view.findViewById(R.id.addTourButton)
+
+        recyclerTours = view.findViewById(R.id.recyclerAdminTours)
+        recyclerUsers = view.findViewById(R.id.recyclerAdminUsers)
+
+        val adapter = ArrayAdapter(
+            this.requireContext(),
+            android.R.layout.simple_spinner_item,
+            countries
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        countrySpinner.adapter = adapter
 
         addTourButton.setOnClickListener {
 
@@ -66,7 +96,13 @@ class MainAdminFragment : Fragment() {
                         db.getTourDao().insertItem(newTour)
                     }
                 }.start()
+                currentToursList.add(newTour)
+                recyclerTours.adapter?.notifyItemInserted(currentToursList.size - 1)
 
+            }
+            else
+            {
+                Snackbar.make(addTourButton, "Все поля должны быть заполнены", Snackbar.LENGTH_SHORT).show()
             }
         }
 
@@ -108,10 +144,10 @@ class MainAdminFragment : Fragment() {
 
                 override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-                    val titleText = holder.itemView.findViewById<TextView>(R.id.titleText)
-                    val countryText = holder.itemView.findViewById<TextView>(R.id.countryText)
-                    val dateText = holder.itemView.findViewById<TextView>(R.id.dateText)
-                    val priceText = holder.itemView.findViewById<TextView>(R.id.priceText)
+                    val titleText = holder.itemView.findViewById<TextView>(R.id.itemTitle)
+                    val countryText = holder.itemView.findViewById<TextView>(R.id.itemCountry)
+                    val dateText = holder.itemView.findViewById<TextView>(R.id.itemDate)
+                    val priceText = holder.itemView.findViewById<TextView>(R.id.itemPrice)
                     val buttonEdit = holder.itemView.findViewById<Button>(R.id.edittourButton)
                     val buttonRemove = holder.itemView.findViewById<Button>(R.id.removetourButton)
 
@@ -122,7 +158,7 @@ class MainAdminFragment : Fragment() {
 
                     buttonEdit.setOnClickListener {
 
-                        val editTourFragment = EditTourFragment(currentToursList[position])
+                        val editTourFragment = EditTourFragment(currentToursList[position], user)
 
                         parentFragmentManager
                             .beginTransaction()
@@ -134,6 +170,7 @@ class MainAdminFragment : Fragment() {
                     buttonRemove.setOnClickListener {
                         Thread{
                             db.getTourDao().delete(currentToursList[position])
+                            db.getBoughtTourDao().deleteRemovedTour(currentToursList[position].name)
                         }.start()
                     }
 
@@ -151,8 +188,8 @@ class MainAdminFragment : Fragment() {
                 usersList.add(User(it.id, login = it.login, password = it.password, admin = it.admin))
             }
 
-            recyclerTours.layoutManager = LinearLayoutManager(this.requireContext())
-            recyclerTours.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+            recyclerUsers.layoutManager = LinearLayoutManager(this.requireContext())
+            recyclerUsers.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 override fun onCreateViewHolder(
                     parent: ViewGroup,
@@ -173,14 +210,22 @@ class MainAdminFragment : Fragment() {
                     val buttonEdit = holder.itemView.findViewById<Button>(R.id.editUserButton)
 
                     buttonRemove.setOnClickListener {
-                        Thread{
-                            db.getUserDao().delete(usersList[position])
-                        }.start()
+                        if (usersList[position].login != user.login)
+                        {
+                            Thread {
+                                db.getUserDao().delete(usersList[position])
+                                db.getBoughtTourDao().deleteRemovedUserTours(usersList[position].login)
+                            }.start()
+                        }
+                        else
+                        {
+                            Snackbar.make(loginText, "Нельзя удалить себя", Snackbar.LENGTH_SHORT).show()
+                        }
                     }
 
                     buttonEdit.setOnClickListener {
 
-                        val editUserFragment = EditUserFragment(usersList[position])
+                        val editUserFragment = EditUserFragment(usersList[position], user)
 
                         parentFragmentManager
                             .beginTransaction()

@@ -4,24 +4,23 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-//TODO IMPLEMENT THIS TO CLIENT TOURS
 @Entity(tableName = "BoughtTours")
 data class BoughtTour
     (
-    @PrimaryKey
-    val id : Int? = null,
-    @ColumnInfo
-    val userId : Int,
-    @ColumnInfo
-    val name : String,
-    @ColumnInfo
-    val username : String,
-    @ColumnInfo
-    val country : String,
-    @ColumnInfo
-    val date : String,
-    @ColumnInfo
-    var flagUrl : String,
-    @ColumnInfo
+    @PrimaryKey(autoGenerate = true)
+    val id: Int? = null,
+    @ColumnInfo(name = "userLogin")
+    val userLogin: String,
+    @ColumnInfo(name = "name")
+    val name: String,
+    @ColumnInfo(name = "username")
+    val username: String,
+    @ColumnInfo(name = "country")
+    val country: String,
+    @ColumnInfo(name = "date")
+    val date: String,
+    @ColumnInfo(name = "flagUrl")
+    var flagUrl: String,
+    @ColumnInfo(name = "imageUrl")
     var imageUrl: String
 )

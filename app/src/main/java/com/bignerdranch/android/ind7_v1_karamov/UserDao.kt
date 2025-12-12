@@ -11,12 +11,16 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
     @Insert
     fun insertItem(item : User)
+    @Query("SELECT EXISTS(SELECT 1 FROM Users WHERE login = :sentname AND password = :sentPassword LIMIT 1)")
+    fun UserExists(sentname : String, sentPassword : String): Boolean
     @Query("SELECT EXISTS(SELECT 1 FROM Users WHERE login = :sentname LIMIT 1)")
-    fun UserExists(sentname : String): Boolean
+    fun UserRegExists(sentname : String): Boolean
     @Query("SELECT EXISTS(SELECT 1 FROM Users WHERE login = :sentname AND admin = 1 LIMIT 1)")
     fun UserIsAdmin(sentname : String): Boolean
     @Query("SELECT * FROM Users")
     fun getAllItems() : Flow<List<User>>
+    @Query("SELECT * FROM Users WHERE login = :login")
+    fun getUserByLogin(login: String?) : User
     @Delete
     fun delete(item : User)
     @Update

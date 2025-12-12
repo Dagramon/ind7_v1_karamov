@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
@@ -14,8 +15,16 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+class EditTourFragment(var tour : CurrentTour, val user : User) : Fragment() {
 
-class EditTourFragment(var tour : CurrentTour) : Fragment() {
+    val countries = arrayOf(
+        "russia",
+        "usa",
+        "germany",
+        "france",
+        "japan",
+        "china"
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,8 +39,34 @@ class EditTourFragment(var tour : CurrentTour) : Fragment() {
         var datePicker = view.findViewById<DatePicker>(R.id.editTourDatePicker)
         var buttonSave = view.findViewById<Button>(R.id.saveTour)
 
+        val adapter = ArrayAdapter(
+            this.requireContext(),
+            android.R.layout.simple_spinner_item,
+            countries
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        countrySpinner.adapter = adapter
+
         titleEditText.setText(tour.name)
         countryText.setText(tour.country)
+        priceEditText.setText(tour.price.toString())
+
+        val format = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val date = format.parse(tour.date)
+
+        val calendar = Calendar.getInstance()
+
+        if (date != null) {
+            calendar.time = date
+        }
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) // 0-based
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        datePicker.init(year, month, day, null)
+
         datePicker.minDate = Calendar.getInstance().timeInMillis
         datePicker.maxDate = Calendar.getInstance().apply {
             add(Calendar.YEAR, 1)
@@ -60,7 +95,7 @@ class EditTourFragment(var tour : CurrentTour) : Fragment() {
                 Thread{
                     db.getTourDao().updateTour(tour)
 
-                    val mainAdminFragment = MainAdminFragment()
+                    val mainAdminFragment = MainAdminFragment(user)
                     parentFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment_container, mainAdminFragment)

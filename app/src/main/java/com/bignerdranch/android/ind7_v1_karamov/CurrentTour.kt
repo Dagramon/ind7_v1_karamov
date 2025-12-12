@@ -8,18 +8,18 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "CurrentTours")
 data class CurrentTour
     (
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id : Int? = null,
-    @ColumnInfo
+    @ColumnInfo(name = "name")
     var name : String,
-    @ColumnInfo
+    @ColumnInfo(name = "country")
     var country : String,
-    @ColumnInfo
+    @ColumnInfo(name = "date")
     var date : String,
-    @ColumnInfo
+    @ColumnInfo(name = "price")
     var price : Int,
-    @Ignore
+    @ColumnInfo(name = "flagUrl")
     var flagUrl : String,
-    @Ignore
+    @ColumnInfo(name = "imageUrl")
     var imageUrl: String
 )

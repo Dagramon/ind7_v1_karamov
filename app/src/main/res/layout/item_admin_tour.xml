@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
-        android:layout_margin="15dp"
+        android:background="@drawable/button"
+        android:padding="5dp"
+        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -13,35 +15,39 @@
         android:orientation="vertical">
 
         <TextView
+            android:layout_marginStart="5dp"
             android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TITLE"
+            android:text="@string/title"
             android:maxWidth="200dp"
             />
         <TextView
+            android:layout_marginStart="5dp"
             android:id="@+id/itemCountry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="COUNTRY"
+            android:text="@string/country"
             />
         <TextView
+            android:layout_marginStart="5dp"
             android:id="@+id/itemDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DATE"
+            android:text="@string/date"
             />
         <TextView
+            android:layout_marginStart="5dp"
             android:id="@+id/itemPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PRICE"
+            android:text="@string/price"
             />
 
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -51,14 +57,14 @@
         <Button
             android:id="@+id/edittourButton"
             android:background="@drawable/button"
-            android:text="Edit"
+            android:text="@string/edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
         <Button
             android:id="@+id/removetourButton"
             android:background="@drawable/button_red"
-            android:text="Delete"
+            android:text="@string/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />

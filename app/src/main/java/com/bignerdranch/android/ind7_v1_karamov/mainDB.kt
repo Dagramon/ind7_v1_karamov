@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase
 abstract class MainDB : RoomDatabase() {
     abstract fun getUserDao() : UserDao
     abstract fun getTourDao() : TourDao
+    abstract fun getBoughtTourDao() : BoughtTourDao
     companion object{
         fun getDb(context: Context): MainDB
         {

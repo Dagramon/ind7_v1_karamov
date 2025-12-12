@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 
-class EditUserFragment(var user : User) : Fragment() {
+class EditUserFragment(var user : User, val useradmin : User) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,7 +20,7 @@ class EditUserFragment(var user : User) : Fragment() {
         var loginText = view.findViewById<EditText>(R.id.editUserLogin)
         var passwordText = view.findViewById<EditText>(R.id.editUserPassword)
         var adminCheckBox = view.findViewById<CheckBox>(R.id.editUserCheckbox)
-        var editButton = view.findViewById<Button>(R.id.editUserButton)
+        var editButton = view.findViewById<Button>(R.id.saveUser)
 
         loginText.setText(user.login)
         passwordText.setText(user.password)
@@ -35,7 +35,7 @@ class EditUserFragment(var user : User) : Fragment() {
             Thread{
                 db.getUserDao().updateUser(user)
 
-                val mainAdminFragment = MainAdminFragment()
+                val mainAdminFragment = MainAdminFragment(useradmin)
                 parentFragmentManager
                     .beginTransaction()
                     .replace(R.id.fragment_container, mainAdminFragment)

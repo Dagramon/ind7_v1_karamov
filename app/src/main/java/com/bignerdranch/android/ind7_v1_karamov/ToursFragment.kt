@@ -1,12 +1,16 @@
 package com.bignerdranch.android.ind7_v1_karamov
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.asLiveData
 import androidx.viewpager2.widget.ViewPager2
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
@@ -14,19 +18,12 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
 
-// TODO: FIX THIS SHIT AND MAKE DISCOUNTS
+var currentTours = mutableListOf<CurrentTour>()
 
-var boughtTours = mutableListOf<BoughtTour>(
-    BoughtTour("Explore the heart of russia", "russia", "", ""),
-    BoughtTour("America tour", "usa", "", ""),
-    BoughtTour("Around turkey", "turkey", "", ""),
-    BoughtTour("Brazil tour", "brazil", "", ""),
-    BoughtTour("China tour", "china", "", ""),
-)
-
-class ToursFragment : Fragment() {
+class ToursFragment(val user: User) : Fragment() {
 
     private lateinit var viewPager: ViewPager2
+    private lateinit var buttonBack : Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,18 +32,42 @@ class ToursFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_tours, container, false)
 
         viewPager = view.findViewById(R.id.viewPager)
+        buttonBack = view.findViewById(R.id.buttonBack)
 
-        viewPager.adapter = CustomPagerAdapter(boughtTours)
+        buttonBack.setOnClickListener {
 
-        viewPager.setPageTransformer { page, position ->
-            val scale = 0.85f + (1 - Math.abs(position)) * 0.15f
-            page.scaleX = scale
-            page.scaleY = scale
+            val mainClientFragment = MainClientFragment(user)
+
+            parentFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, mainClientFragment)
+                .commit()
+
         }
 
-        for (i in 0 until boughtTours.size) {
-            requestFlagAndPicture(boughtTours[i].country, i)
+        val db = MainDB.getDb(this.requireContext())
+        db.getTourDao().getAllItems().asLiveData().observe(this.requireContext() as LifecycleOwner) {
+
+            currentTours.clear()
+
+            it.forEach {
+                currentTours.add(CurrentTour(it.id, name = it.name, country = it.country, date = it.date, price = it.price, flagUrl = it.flagUrl, imageUrl = it.imageUrl))
+            }
+
+            viewPager.adapter = CustomPagerAdapter(currentTours, context as Context, user, parentFragmentManager)
+
+            viewPager.setPageTransformer { page, position ->
+                val scale = 0.85f + (1 - Math.abs(position)) * 0.15f
+                page.scaleX = scale
+                page.scaleY = scale
+            }
+
+            for (i in 0 until currentTours.size) {
+                requestFlagAndPicture(currentTours[i].country, i)
+            }
+
         }
+
 
         return view
     }
@@ -74,8 +95,8 @@ class ToursFragment : Fragment() {
         try {
             val mainObject = JSONArray(result)
             val countryObject: JSONObject = mainObject.getJSONObject(0)
-            boughtTours[index].flagUrl = countryObject.getJSONObject("flags").getString("png")
-            Log.d("myLog", boughtTours[index].flagUrl)
+            currentTours[index].flagUrl = countryObject.getJSONObject("flags").getString("png")
+            Log.d("myLog", currentTours[index].flagUrl)
             requestCapitalPicture(countryObject.getJSONArray("capital").getString(0), index)
         } catch (e: Exception) {
             Log.e("MyAppTag", "Error parsing tour data", e)
@@ -93,8 +114,8 @@ class ToursFragment : Fragment() {
             { result ->
                 try {
                     val mainObject = JSONObject(result)
-                    boughtTours[index].imageUrl = mainObject.getJSONArray("results").getJSONObject(0).getJSONObject("urls").getString("full")
-                    Log.d("myLog", boughtTours[index].imageUrl)
+                    currentTours[index].imageUrl = mainObject.getJSONArray("results").getJSONObject(0).getJSONObject("urls").getString("regular")
+                    Log.d("myLog", currentTours[index].imageUrl)
                 } catch (e: Exception) {
                 }
             },

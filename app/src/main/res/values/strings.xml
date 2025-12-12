@@ -1,5 +1,32 @@
 <resources>
     <string name="app_name">Tour agency</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="enter">Enter</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="editing_tour">Editing tour...</string>
+    <string name="tour_title">Tour title</string>
+    <string name="country">Country</string>
+    <string name="price">Price</string>
+    <string name="save">SAVE</string>
+    <string name="editing_user">Editing user...</string>
+    <string name="admin">Admin</string>
+    <string name="hello_user">Hello, user</string>
+    <string name="tour_price">Tour price</string>
+    <string name="add_tour">Add tour</string>
+    <string name="current_tours">Current tours</string>
+    <string name="users">Users</string>
+    <string name="your_tours">Your tours:</string>
+    <string name="buy_new_tours">Buy new tours</string>
+    <string name="back">Back</string>
+    <string name="title">TITLE</string>
+    <string name="date">DATE</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="name">name</string>
+    <string name="buy_this_tour">BUY THIS TOUR</string>
+    <string name="username">USERNAME</string>
+    <string name="loading">LOADING...</string>
 </resources>

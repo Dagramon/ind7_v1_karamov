@@ -15,49 +15,34 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/userLoginText"
+            android:layout_marginStart="5dp"
+            android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login"
+            android:text="@string/title"
             android:maxWidth="200dp"
             />
         <TextView
-            android:id="@+id/userPasswordText"
+            android:layout_marginStart="5dp"
+            android:id="@+id/itemUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/password"
+            android:text="@string/username"
+            android:maxWidth="200dp"
             />
-        <CheckBox
-            android:id="@+id/userAdminCheckbox"
-            android:enabled="false"
+        <TextView
+            android:layout_marginStart="5dp"
+            android:id="@+id/itemCountry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/admin"
+            android:text="@string/country"
             />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="end"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/editUserButton"
-            android:background="@drawable/button"
-            android:text="@string/edit"
+        <TextView
+            android:layout_marginStart="5dp"
+            android:id="@+id/itemDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
-        <Button
-            android:id="@+id/removeUserButton"
-            android:background="@drawable/button_red"
-            android:text="@string/delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="@string/date"
             />
 
     </LinearLayout>

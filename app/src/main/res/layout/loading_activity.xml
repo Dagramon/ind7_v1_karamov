@@ -18,9 +18,9 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:fontFamily="sans-serif-black"
-        android:textSize="50dp"
+        android:textSize="50sp"
         android:textColor="@color/white"
-        android:text="LOADING..."
+        android:text="@string/loading"
         />
 
 </FrameLayout>

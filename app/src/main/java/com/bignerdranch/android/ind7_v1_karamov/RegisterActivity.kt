@@ -1,20 +1,17 @@
 package com.bignerdranch.android.ind7_v1_karamov
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import androidx.activity.enableEdgeToEdge
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.snackbar.Snackbar
-import okhttp3.internal.cache.DiskLruCache
+
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var buttonRegEnter : Button
-    private lateinit var loginButton : Button
+    private lateinit var loginButton : TextView
 
     private lateinit var loginText : EditText
     private lateinit var passwordText : EditText
@@ -40,18 +37,26 @@ class RegisterActivity : AppCompatActivity() {
         buttonRegEnter.setOnClickListener {
             if (loginText.text.toString().isNotEmpty() && passwordText.text.toString().isNotEmpty())
             {
-                if (passwordText.text == repeatPasswordText.text)
+                if (passwordText.text.toString() == repeatPasswordText.text.toString())
                 {
                     val user = User(null, loginText.text.toString(), passwordText.text.toString(), false)
                     val db = MainDB.getDb(this)
                     Thread {
-                        if (!db.getUserDao().UserExists(user.login)) {
+                        if (!db.getUserDao().UserRegExists(user.login)) {
                             db.getUserDao().insertItem(user)
 
-                            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                            val intent = Intent(this@RegisterActivity, MainActivity::class.java).apply {
+                                putExtra("USER", user)
+                                putExtra("USER_ADMIN", false)
+                            }
                             startActivity(intent)
                             finish()
-
+                        }
+                        else
+                        {
+                            this.runOnUiThread{
+                                Snackbar.make(buttonRegEnter, "Этот пользователь уже существует", Snackbar.LENGTH_LONG).show()
+                            }
                         }
                     }.start()
                 }
